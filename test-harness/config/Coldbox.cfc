@@ -26,7 +26,7 @@
 			//Error/Exception Handling
 			exceptionHandler		= "",
 			onInvalidEvent			= "",
-			customErrorTemplate 	= "/coldbox/system/includes/BugReport.cfm",
+			customErrorTemplate 	= "/coldbox/system/exceptions/Whoops.cfm",
 
 			//Application Aspects
 			handlerCaching 			= false,
@@ -50,15 +50,15 @@
 
 		//Register interceptors as an array, we need order
 		interceptors = [
-			 //SES
-			 { class="coldbox.system.interceptors.SES" }
 		];
 
 		//LogBox DSL
 		logBox = {
 			// Define Appenders
 			appenders = {
-				files={class="coldbox.system.logging.appenders.RollingFileAppender",
+				myConsole : { class : "ConsoleAppender" },
+				files : {
+					class="RollingFileAppender",
 					properties = {
 						filename = "tester", filePath="/#appMapping#/logs"
 					}
@@ -76,12 +76,17 @@
 	 * Load the Module you are testing
 	 */
 	function afterAspectsLoad( event, interceptData, rc, prc ){
-		getApplicationMetadata();
+
 		controller.getModuleService()
 			.registerAndActivateModule(
 				moduleName 		= request.MODULE_NAME,
 				invocationPath 	= "moduleroot"
 			);
+
+        // Reload the renderer in case we have module helpers
+        controller.getRenderer().startup()
+        // Reload all interceptors with new mixins if available.
+        controller.getInterceptorService().announce( "cbLoadInterceptorHelpers" )
 	}
 
 }

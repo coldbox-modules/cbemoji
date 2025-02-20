@@ -40,8 +40,29 @@ component{
 	this.mappings[ "/root" ] = COLDBOX_APP_ROOT_PATH;
 
 	// Map back to its root
-	this.mappings[ "/moduleroot" ] = expandPath( "../../" );
-	this.mappings[ "/#request.MODULE_NAME#" ] = expandPath( "../../" );
+	moduleRootPath 	= REReplaceNoCase( this.mappings[ "/root" ], "#request.MODULE_NAME#(\\|/)test-harness(\\|/)", "" );
+	modulePath 		= REReplaceNoCase( this.mappings[ "/root" ], "test-harness(\\|/)", "" );
+
+	// Module Root + Path Mappings
+	this.mappings[ "/moduleroot" ] = moduleRootPath;
+	this.mappings[ "/#request.MODULE_NAME#" ] = modulePath;
+
+	// ORM definitions: ENABLE IF NEEDED
+	//this.datasource = "coolblog";
+	//this.ormEnabled = "true";
+	/**
+	this.ormSettings = {
+		cfclocation = [ "models" ],
+		logSQL = true,
+		dbcreate = "update",
+		secondarycacheenabled = false,
+		cacheProvider = "ehcache",
+		flushAtRequestEnd = false,
+		eventhandling = true,
+		eventHandler = "cborm.models.EventHandler",
+		skipcfcWithError = true
+	};
+	**/
 
 	// application start
 	public boolean function onApplicationStart(){
@@ -52,6 +73,14 @@ component{
 
 	// request start
 	public boolean function onRequestStart(String targetPage){
+
+		if( url.keyExists( "fwreinit" ) ){
+			if( server.keyExists( "lucee" ) ){
+				pagePoolClear();
+			}
+			// ORM reload: ENABLE IF NEEDED
+			// ormReload();
+		}
 
 		// Process ColdBox Request
 		application.cbBootstrap.onRequestStart( arguments.targetPage );
