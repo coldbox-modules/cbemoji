@@ -1,6 +1,6 @@
 {
     "name":"Emoji Module",
-    "version":"@build.version@+@build.number@",
+    "version":"1.1.0",
     "location":"http://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cbemoji/@build.version@/cbemoji-@build.version@.zip",
     "author":"Ortus Solutions, Corp",
     "homepage":"https://www.ortussolutions.com",
