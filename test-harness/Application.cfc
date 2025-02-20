@@ -7,14 +7,14 @@ www.ortussolutions.com
 component{
 
 	// UPDATE THE NAME OF THE MODULE IN TESTING BELOW
-	request.MODULE_NAME = "cbox-emoji";
-	
+	request.MODULE_NAME = "cbemoji";
+
 	// Application properties
 	this.name              = hash( getCurrentTemplatePath() );
 	this.sessionManagement = true;
 	this.sessionTimeout    = createTimeSpan(0,0,15,0);
     this.setClientCookies  = true;
-    
+
     /**************************************
 	LUCEE Specific Settings
 	**************************************/
@@ -42,7 +42,7 @@ component{
 	// Map back to its root
 	this.mappings[ "/moduleroot" ] = expandPath( "../../" );
 	this.mappings[ "/#request.MODULE_NAME#" ] = expandPath( "../../" );
-	
+
 	// application start
 	public boolean function onApplicationStart(){
 		application.cbBootstrap = new coldbox.system.Bootstrap( COLDBOX_CONFIG_FILE, COLDBOX_APP_ROOT_PATH, COLDBOX_APP_KEY, COLDBOX_APP_MAPPING );
